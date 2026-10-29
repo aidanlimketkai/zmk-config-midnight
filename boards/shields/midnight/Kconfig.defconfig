@@ -1,0 +1,6 @@
+if SHIELD_MIDNIGHT
+
+config ZMK_KEYBOARD_NAME
+    default "midnight"
+
+endif # SHIELD_MIDNIGHT

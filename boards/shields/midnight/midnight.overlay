@@ -1,0 +1,40 @@
+#include <dt-bindings/pinctrl/nrf-pinctrl.h>
+
+&i2c0 {
+    status = "okay";
+    compatible = "nordic,nrf-twi";
+    pinctrl-0 = <&i2c0_default>;
+    pinctrl-1 = <&i2c0_sleep>;
+    pinctrl-names = "default", "sleep";
+
+    as5600: as5600@36 {
+        compatible = "ams,as5600";
+        reg = <0x36>;
+    };
+};
+
+&pinctrl {
+    i2c0_default: i2c0_default {
+        group1 {
+            psels = <NRF_PSEL(TWIM_SDA, 0, 4)>,  /* Pin D4 on XIAO nRF52840 */
+                    <NRF_PSEL(TWIM_SCL, 0, 5)>;  /* Pin D5 on XIAO nRF52840 */
+        };
+    };
+
+    i2c0_sleep: i2c0_sleep {
+        group1 {
+            psels = <NRF_PSEL(TWIM_SDA, 0, 4)>,
+                    <NRF_PSEL(TWIM_SCL, 0, 5)>;
+            low-power-enable;
+        };
+    };
+};
+
+/* Bind sensor to input listener and configure smooth scroll scaling/direction */
+/ {
+    as5600_listener {
+        compatible = "zmk,input-listener";
+        device = <&as5600>;
+        input-processors = <&zip_scroll_scaler (-2) 1>;
+    };
+};
