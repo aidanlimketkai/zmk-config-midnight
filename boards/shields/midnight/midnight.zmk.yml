@@ -16,4 +16,4 @@ features:
   - keys
 
 requires:
-  - seeeduino_xiao_ble
+  - seeed_xiao
