@@ -40,15 +40,14 @@
     default_kscan: kscan {
         compatible = "zmk,kscan-gpio-direct";
         label = "default_kscan";
-        input-gpios = 
+        input-gpios =
             <&xiao_d 0 GPIO_ACTIVE_HIGH>,
             <&xiao_d 1 GPIO_ACTIVE_HIGH>;
     };
-    
+
     as5600_listener {
         compatible = "zmk,input-listener";
         device = <&as5600>;
-        y-bindings = <&zmk_mouse_scroll_2>;
-        input-processors = <&zip_scroll_scaler 2 1>;
+        input-processors = <&zip_scroll_scaler 1 1>;
     };
 };
