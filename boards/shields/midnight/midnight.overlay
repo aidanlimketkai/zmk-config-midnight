@@ -1,70 +1,37 @@
-#include <dt-bindings/pinctrl/nrf-pinctrl.h>
-#include <dt-bindings/input/input-event-codes.h>
+#include <input/processors.dtsi>
 
-/ {
-    chosen {
-        zmk,kscan = &mock_kscan;
-        zmk,matrix-transform = &default_transform;
-    };
-
-    /* Dummy matrix transform required by ZMK for keymap resolution */
-    default_transform: matrix_transform {
-        compatible = "zmk,matrix-transform";
-        columns = <1>;
-        rows = <1>;
-        map = <RC(0,0)>;
-    };
-
-    /* Dummy kscan node if no physical switch matrix exists */
-    mock_kscan: kscan {
-        compatible = "zmk,kscan-mock";
-        columns = <1>;
-        rows = <1>;
-        events = <0>;
-    };
-
-    zip_scroll_scaler: zip_scroll_scaler {
-        compatible = "zmk,input-processor-scaler";
-        #input-processor-cells = <2>;
-        type = <INPUT_EV_REL>;
-        codes = <INPUT_REL_WHEEL INPUT_REL_HWHEEL>;
-    };
-
-    as5600_listener {
-        compatible = "zmk,input-listener";
-        device = <&as5600>;
-        /* Fixed: removed the parentheses around -2 */
-        input-processors = <&zip_scroll_scaler -2 1>;
-    };
-};
-
-&i2c0 {
-    status = "okay";
+&xiao_i2c {
     compatible = "nordic,nrf-twi";
     pinctrl-0 = <&i2c0_default>;
     pinctrl-1 = <&i2c0_sleep>;
     pinctrl-names = "default", "sleep";
+    status = "okay";
 
-    as5600: as5600@36 {
-        compatible = "ams,as5600";
+    as5600: as5600@36{
+        compatible = "zmk,input-ams-as5600";
         reg = <0x36>;
         status = "okay";
     };
 };
 
-&pinctrl {
-    i2c0_default: i2c0_default {
-        group1 {
-            psels = <NRF_PSEL(TWIM_SDA, 0, 4)>,  /* Pin D4 on XIAO nRF52840 */
-                    <NRF_PSEL(TWIM_SCL, 0, 5)>;  /* Pin D5 on XIAO nRF52840 */
-        };
+/ {
+    chosen {
+        zmk,kscan = &default_kscan;
     };
 
-    i2c0_sleep: i2c0_sleep {
-        group1 {
-            psels = <NRF_PSEL(TWIM_SDA, 0, 4)>,
-                    <NRF_PSEL(TWIM_SCL, 0, 5)>;
-            low-power-enable;
-        };
+    default_kscan: kscan {
+        compatible = "zmk,kscan-gpio-direct";
+        label = "default_kscan";
+
+        input-gpios = 
+            <&xiao_d 0 GPIO_ACTIVE_HIGH>,
+            <&xiao_d 1 GPIO_ACTIVE_HIGH>
+            ;
+    };
+    
+    as5600_listener: as5600_listener {
+        compatible = "zmk,input-listener";
+        device = <&as5600>;
+        input-processors = <&zip_scroll_scaler (-1) 2>;
     };
 };
