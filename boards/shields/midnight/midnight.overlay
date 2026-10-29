@@ -8,7 +8,7 @@
     status = "okay";
 
     as5600: as5600@36{
-        compatible = "zmk,input-ams-as5600";
+        compatible = "ams,as5600";
         reg = <0x36>;
         status = "okay";
     };
@@ -25,13 +25,13 @@
 
         input-gpios = 
             <&xiao_d 0 GPIO_ACTIVE_HIGH>,
-            <&xiao_d 1 GPIO_ACTIVE_HIGH>
+            < &xiao_d 1 GPIO_ACTIVE_HIGH>
             ;
     };
     
-    as5600_listener: as5600_listener {
+    as5600_listener {
         compatible = "zmk,input-listener";
         device = <&as5600>;
-        input-processors = <&zip_scroll_scaler (-1) 2>;
+        input-processors = <&zip_scroll_scaler -1 2>;
     };
 };
