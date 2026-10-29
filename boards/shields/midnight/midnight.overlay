@@ -9,7 +9,7 @@
     status = "okay";
 
     as5600: as5600@36 {
-        compatible = "zmk,input-ams-as5600"; // <-- Change this line
+        compatible = "zmk,input-ams-as5600";
         reg = <0x36>;
         status = "okay";
     };
@@ -37,6 +37,7 @@
         zmk,kscan = &default_kscan;
     };
 
+    /* Required dummy/direct kscan node for ZMK compilation */
     default_kscan: kscan {
         compatible = "zmk,kscan-gpio-direct";
         label = "default_kscan";

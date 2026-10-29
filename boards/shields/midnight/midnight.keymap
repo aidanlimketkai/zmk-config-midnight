@@ -1,17 +1,15 @@
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
-#include <dt-bindings/zmk/bt.h>
-#include <dt-bindings/zmk/pointing.h>
-#include <dt-bindings/zmk/outputs.h>
 
 / {
     keymap {
         compatible = "zmk,keymap";
 
         default_layer {
+            // These two keys correspond to the two dummy pins in your overlay's kscan block
             bindings = <
-            &kp A
-            &kp B
+                &kp A
+                &kp B
             >;
         };
     };
