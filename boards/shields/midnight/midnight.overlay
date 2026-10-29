@@ -46,9 +46,10 @@
             <&xiao_d 1 GPIO_ACTIVE_HIGH>;
     };
 
-   as5600_listener {
+ as5600_listener {
         compatible = "zmk,input-listener";
         device = <&as5600>;
-        input-processors = <&zip_xy_swap>, <&zip_scroll_scaler 5 1>;
+        /* Remove zip_xy_swap, and use proper scroll scaling */
+        input-processors = <&zip_scroll_scaler 120 1>;
     };
 };
