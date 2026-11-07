@@ -6,3 +6,4 @@ requires:
   - seeeduino_xiao
 features:
   - keys
+  - pointers 
